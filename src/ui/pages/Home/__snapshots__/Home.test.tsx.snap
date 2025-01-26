@@ -3,7 +3,9 @@
 exports[`Home should match snapshot 1`] = `
 <div>
   <div>
-    <h1>
+    <h1
+      class="text-3xl"
+    >
       Bem vindo
     </h1>
   </div>
