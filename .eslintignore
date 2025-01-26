@@ -1,0 +1,3 @@
+node_modules/
+jest.setup.ts
+jest.config.ts

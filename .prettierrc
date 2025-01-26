@@ -1,0 +1,16 @@
+{
+  "semi": true,
+  "singleQuote": true,
+  "useTabs": false,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "endOfLine": "lf",
+  "trailingComma": "es5",
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": "*.json/hbs",
+      "options": { "singleQuote": true, "parser": "json" }
+    }
+  ]
+}
