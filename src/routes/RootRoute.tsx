@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-const HomeLazy = React.lazy(() =>
-  import('ui/pages/Home/Home').then(({ Home }) => ({ default: Home }))
+const LoginLazy = React.lazy(() =>
+  import('ui/pages/Login/Login').then(({ Login: Login }) => ({ default: Login }))
 );
 
 function ErrorBoundary({ children }: { children: React.ReactNode }) {
@@ -20,7 +20,7 @@ export function RootRoute() {
       <Suspense fallback={<div>Loading...</div>}>
         <ErrorBoundary>
           <Routes>
-            <Route path='/' element={<HomeLazy />} />
+            <Route path='/' element={<LoginLazy />} />
           </Routes>
         </ErrorBoundary>
       </Suspense>
