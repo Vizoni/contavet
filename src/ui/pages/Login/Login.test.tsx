@@ -4,7 +4,7 @@ import { Login } from './Login';
 
 const setup = () => renderWithProviders(<Login />);
 
-describe('Home', () => {
+describe('Login', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.restoreAllMocks();
@@ -14,5 +14,11 @@ describe('Home', () => {
     const { container } = setup();
 
     expect(container).toMatchSnapshot();
+  });
+
+  it('should render google login button', () => {
+    const { getByText } = setup();
+
+    expect(getByText('Entrar com Google')).toBeInTheDocument();
   });
 });
