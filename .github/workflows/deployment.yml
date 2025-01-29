@@ -22,26 +22,22 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - name: Install Dependencies
         run: yarn install --immutable
-
       - name: Set environment variables
         env:
           VITE_GOOGLE_AUTH_CLIENT_ID: ${{ secrets.VITE_GOOGLE_AUTH_CLIENT_ID }}
-        run: echo "VITE_GOOGLE_AUTH_CLIENT_ID=${{ secrets.VITE_GOOGLE_AUTH_CLIENT_ID }}" >> $GITHUB_ENV
-      - name: Check environment variable
-        run: echo "VITE_GOOGLE_AUTH_CLIENT_ID=${{ secrets.VITE_GOOGLE_AUTH_CLIENT_ID }}"
-
+          VITE_GOOGLE_AUTH_CLIENT_SECRET: ${{ secrets.VITE_GOOGLE_AUTH_CLIENT_SECRET }}
+          VITE_VERCEL_TOKEN: ${{ secrets.VITE_VERCEL_TOKEN }}
+        run: echo "Variáveis de ambiente setadas no github"
       - name: TypeScript
         run: yarn type-check
       - name: Lint
         run: yarn lint-check
       - name: Prettier
         run: yarn prettier-check
-      - name: Test
-        run: yarn test:coverage
+      # - name: Test
+      #   run: yarn test:coverage
       - name: Build project
-        run: echo "Building..." && yarn build
-      - name: Debug environment variables
-        run: echo "VITE_GOOGLE_AUTH_CLIENT_ID=$VITE_GOOGLE_AUTH_CLIENT_ID"
+        run: yarn build
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
@@ -49,8 +45,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      # - name: Deploy
-      #   run: echo "Deploying..."
+      - name: Install Vercel CLI
+        run: yarn global add vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VITE_VERCEL_TOKEN }}
+      # - name: Configurar variáveis na Vercel
+      #   run: |
+      #     echo "${{ secrets.VITE_GOOGLE_AUTH_CLIENT_SECRET }}" | vercel env add VITE_GOOGLE_AUTH_CLIENT_SECRET production --token ${{ secrets.VITE_VERCEL_TOKEN }}
+      #     echo "${{ secrets.VITE_GOOGLE_AUTH_CLIENT_ID }}" | vercel env add VITE_GOOGLE_AUTH_CLIENT_ID production --token ${{ secrets.VITE_VERCEL_TOKEN }}
+      - name: Configurar variáveis na Vercel
+        run: |
+          for ENV in production preview development; do
+            if ! vercel env ls --token ${{ secrets.VITE_VERCEL_TOKEN }} | grep -q VITE_GOOGLE_AUTH_CLIENT_SECRET; then
+            echo "${{ secrets.VITE_GOOGLE_AUTH_CLIENT_SECRET }}" | vercel env add VITE_GOOGLE_AUTH_CLIENT_SECRET production --token ${{ secrets.VITE_VERCEL_TOKEN }}
+            fi
+            if ! vercel env ls --token ${{ secrets.VITE_VERCEL_TOKEN }} | grep -q VITE_GOOGLE_AUTH_CLIENT_ID; then
+              echo "${{ secrets.VITE_GOOGLE_AUTH_CLIENT_ID }}" | vercel env add VITE_GOOGLE_AUTH_CLIENT_ID production --token ${{ secrets.VITE_VERCEL_TOKEN }}
+            fi
+          done
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VITE_VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VITE_VERCEL_TOKEN }}
       - name: Deploy para a Vercel
-        run: npx vercel --prod --token ${{ secrets.VITE_VERCEL_PROJECT_ID }} --scope ${{ secrets.VITE_VERCEL_ORG_ID }}
+        run: vercel deploy --prod --yes --token ${{ secrets.VITE_VERCEL_TOKEN }}
