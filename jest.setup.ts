@@ -6,3 +6,7 @@ import 'jest-canvas-mock';
 global.DOMRect = {
   fromRect: () => ({}) as any,
 } as any;
+
+jest.mock('react-router', () => ({
+  useNavigate: jest.fn(),
+}));
