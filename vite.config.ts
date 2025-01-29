@@ -1,10 +1,11 @@
 import react from '@vitejs/plugin-react';
+import EnvironmentPlugin from 'vite-plugin-environment';
 
 import { defineConfig } from 'vite';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), EnvironmentPlugin('all', { prefix: '' })],
   resolve: {
     alias: {
       ui: path.resolve(__dirname, 'src/ui'),

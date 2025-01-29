@@ -8,12 +8,12 @@ import '@fontsource/roboto/700.css';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-// TODO: Isso aqui tem que estar num var env (lembrar de também criar no github actions!)
-export const CLIENT_ID = '937575590763-mk76i24n9p8cv1pb316q6ujo8juhhp3q.apps.googleusercontent.com';
-
+const GOOGLE_AUTH_CLIENT_ID = import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID;
+console.info('var env', import.meta.env);
+console.info('var env2', GOOGLE_AUTH_CLIENT_ID);
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <GoogleOAuthProvider clientId={CLIENT_ID}>
+  <GoogleOAuthProvider clientId={GOOGLE_AUTH_CLIENT_ID}>
     <App />
   </GoogleOAuthProvider>
 );
