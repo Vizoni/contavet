@@ -18,7 +18,6 @@ export const GoogleLandingPageTemporary = () => {
         client_id: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID || '',
         client_secret: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_SECRET || '',
         redirect_uri: redirectUri,
-        // scope: codeResponse.scope,
       }),
     });
     console.info('resp', response);
