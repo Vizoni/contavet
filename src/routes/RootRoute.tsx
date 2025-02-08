@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 
 import { BrowserRouter, Route, Routes } from 'react-router';
+// import { PrivateRoute } from './PrivateRoute';
 
 const LoginLazy = React.lazy(() =>
   import('ui/pages/Login/Login').then(({ Login: Login }) => ({ default: Login }))
@@ -31,12 +32,16 @@ export function RootRoute() {
         <ErrorBoundary>
           <Routes>
             <Route path='/' element={<LoginLazy />} />
-          </Routes>
-          <Routes>
-            <Route path='/home2' element={<HomeLazy />} />
-          </Routes>
-          <Routes>
             <Route path='/home' element={<GoogleLoginLazy />} />
+            <Route path='/home2' element={<HomeLazy />} />
+            {/* <Route
+              path='/home2'
+              element={
+                <PrivateRoute>
+                  <HomeLazy />
+                </PrivateRoute>
+              }
+            /> */}
           </Routes>
         </ErrorBoundary>
       </Suspense>

@@ -10,6 +10,8 @@ export default defineConfig({
     alias: {
       ui: path.resolve(__dirname, 'src/ui'),
       routes: path.resolve(__dirname, 'src/routes'),
+      contexts: path.resolve(__dirname, 'src/contexts'),
+      utils: path.resolve(__dirname, 'src/utils'),
     },
   },
   build: {
