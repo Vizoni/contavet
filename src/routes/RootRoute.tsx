@@ -5,6 +5,13 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 const LoginLazy = React.lazy(() =>
   import('ui/pages/Login/Login').then(({ Login: Login }) => ({ default: Login }))
 );
+const GoogleLoginLazy = React.lazy(() =>
+  import('ui/pages/Login/GoogleLandingPageTemporary').then(
+    ({ GoogleLandingPageTemporary: GoogleLandingPageTemporary }) => ({
+      default: GoogleLandingPageTemporary,
+    })
+  )
+);
 const HomeLazy = React.lazy(() =>
   import('ui/pages/Home/Home').then(({ Home: Home }) => ({ default: Home }))
 );
@@ -26,7 +33,10 @@ export function RootRoute() {
             <Route path='/' element={<LoginLazy />} />
           </Routes>
           <Routes>
-            <Route path='/home' element={<HomeLazy />} />
+            <Route path='/home2' element={<HomeLazy />} />
+          </Routes>
+          <Routes>
+            <Route path='/home' element={<GoogleLoginLazy />} />
           </Routes>
         </ErrorBoundary>
       </Suspense>
