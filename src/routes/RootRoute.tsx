@@ -1,11 +1,13 @@
 import React, { Suspense } from 'react';
 
-import { BrowserRouter, Route, Routes } from 'react-router';
-// import { PrivateRoute } from './PrivateRoute';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { useAuth } from 'utils/hooks/useAuth/useAuth';
+import { PrivateRoute } from './PrivateRoute';
 
 const LoginLazy = React.lazy(() =>
   import('ui/pages/Login/Login').then(({ Login: Login }) => ({ default: Login }))
 );
+
 const GoogleLoginLazy = React.lazy(() =>
   import('ui/pages/Login/GoogleLandingPageTemporary').then(
     ({ GoogleLandingPageTemporary: GoogleLandingPageTemporary }) => ({
@@ -13,6 +15,7 @@ const GoogleLoginLazy = React.lazy(() =>
     })
   )
 );
+
 const HomeLazy = React.lazy(() =>
   import('ui/pages/Home/Home').then(({ Home: Home }) => ({ default: Home }))
 );
@@ -26,6 +29,11 @@ function ErrorBoundary({ children }: { children: React.ReactNode }) {
 }
 
 export function RootRoute() {
+  const { user } = useAuth();
+
+  if (!user) {
+    <Navigate to='/' replace />;
+  }
   return (
     <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
@@ -33,15 +41,15 @@ export function RootRoute() {
           <Routes>
             <Route path='/' element={<LoginLazy />} />
             <Route path='/home' element={<GoogleLoginLazy />} />
-            <Route path='/home2' element={<HomeLazy />} />
-            {/* <Route
+            {/* <Route path='/home2' element={<HomeLazy />} /> */}
+            <Route
               path='/home2'
               element={
                 <PrivateRoute>
                   <HomeLazy />
                 </PrivateRoute>
               }
-            /> */}
+            />
           </Routes>
         </ErrorBoundary>
       </Suspense>
